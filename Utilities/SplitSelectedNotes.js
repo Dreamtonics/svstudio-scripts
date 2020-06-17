@@ -45,7 +45,7 @@ function main() {
     if(playheadBlicks > originalOnset && playheadBlicks < originalEnd)
       durationLeft = playheadBlicks - originalOnset;
     
-      // The left note after splitting.
+    // The left note after splitting.
     note.setDuration(durationLeft);
     // The right note after splitting.
     var splitted = SV.create("Note");
