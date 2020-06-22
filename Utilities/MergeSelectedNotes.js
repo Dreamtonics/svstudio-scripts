@@ -12,7 +12,7 @@ function getClientInfo() {
 function getTranslations(langCode) {
   if(langCode == "ja-jp") {
     return [
-      ["Merge Selected Notes", "選択したノートをマージ"]
+      ["Merge Selected Notes", "選択したノートをマージ"],
       ["Can't merge selected notes.", "選択したノートをマージできません。"]
     ];
   }
