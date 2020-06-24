@@ -25,27 +25,30 @@ function main() {
   var closestOnset = group.getNote(0).getOnset();
   playback.play();
 
+  var project = SV.getProject();
+  var timeAxis = project.getTimeAxis();
+
   function getNewPos() {
     var skip = true;
     var position = playback.getPlayhead();
     // SV.showMessageBox(SV.T("Debugging"), position);
     var foundClosest = false;
     for(var i = 0; i < N; i++) {
-      if(!foundClosest && position < group.getNote(i).getOnset() / SV.QUARTER / 2) {
+      if(!foundClosest && position < timeAxis.getSecondsFromBlick(group.getNote(i).getOnset())) {
         closestOnset = group.getNote(i).getOnset();
         foundClosest = true;
       }
-      var checkLeft = position >= group.getNote(i).getOnset() / SV.QUARTER / 2;
-      var checkRight = position <= group.getNote(i).getEnd() / SV.QUARTER / 2;
+      var checkLeft = position >= timeAxis.getSecondsFromBlick(group.getNote(i).getOnset());
+      var checkRight = position <= timeAxis.getSecondsFromBlick(group.getNote(i).getEnd());
       if(checkLeft && checkRight) {
         skip = false;
         break;
       }
     }
     if(skip) {
-      playback.seek(closestOnset / SV.QUARTER / 2);
+      playback.seek(timeAxis.getSecondsFromBlick(closestOnset));
     }
-    if(position > group.getNote(N - 1).getEnd() / SV.QUARTER / 2) {
+    if(position > timeAxis.getSecondsFromBlick(group.getNote(N - 1).getEnd())) {
       playback.stop();
       SV.finish();
     } else {
