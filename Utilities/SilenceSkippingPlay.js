@@ -22,7 +22,8 @@ function main() {
   var scope = SV.getMainEditor().getCurrentGroup();
   var group = scope.getTarget();
   var N = group.getNumNotes();
-  var closestOnset = group.getNote(0).getOnset();
+  var offset = scope.getTimeOffset();
+  var closestOnset = group.getNote(0).getOnset() + offset;
   playback.play();
 
   var project = SV.getProject();
@@ -30,16 +31,16 @@ function main() {
 
   function getNewPos() {
     var skip = true;
-    var position = playback.getPlayhead();
-    // SV.showMessageBox(SV.T("Debugging"), position);
+    var position = timeAxis.getBlickFromSeconds(playback.getPlayhead());
     var foundClosest = false;
     for(var i = 0; i < N; i++) {
-      if(!foundClosest && position < timeAxis.getSecondsFromBlick(group.getNote(i).getOnset())) {
-        closestOnset = group.getNote(i).getOnset();
+      var onset = group.getNote(i).getOnset() + offset;
+      if(!foundClosest && position < onset) {
+        closestOnset = onset;
         foundClosest = true;
       }
-      var checkLeft = position >= timeAxis.getSecondsFromBlick(group.getNote(i).getOnset());
-      var checkRight = position <= timeAxis.getSecondsFromBlick(group.getNote(i).getEnd());
+      var checkLeft = position >= onset;
+      var checkRight = position <= group.getNote(i).getEnd() + offset;
       if(checkLeft && checkRight) {
         skip = false;
         break;
@@ -48,14 +49,14 @@ function main() {
     if(skip) {
       playback.seek(timeAxis.getSecondsFromBlick(closestOnset));
     }
-    if(position > timeAxis.getSecondsFromBlick(group.getNote(N - 1).getEnd())) {
+    if(position > group.getNote(N - 1).getEnd() + offset) {
       playback.stop();
       SV.finish();
     } else {
-      SV.setTimeout(100, getNewPos);
+      SV.setTimeout(200, getNewPos);
     }
 
   }
 
-  SV.setTimeout(100, getNewPos);
+  SV.setTimeout(200, getNewPos);
 }
