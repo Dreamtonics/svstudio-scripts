@@ -49,9 +49,12 @@ function main() {
     if(skip) {
       playback.seek(timeAxis.getSecondsFromBlick(closestOnset));
     }
-    if(position > group.getNote(N - 1).getEnd() + offset) {
+    if(position > group.getNote(N - 1).getEnd() + offset || 
+      playback.getStatus() == "stopped") {
+        
       playback.stop();
       SV.finish();
+      return;
     } else {
       SV.setTimeout(200, getNewPos);
     }
