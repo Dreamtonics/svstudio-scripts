@@ -1,6 +1,7 @@
 function getClientInfo() {
   return {
     "name" : "Test Automation (Javascript)",
+    "category" : "Tests",
     "author" : "Dreamtonics",
     "versionNumber" : 0,
     "minEditorVersion" : 65537

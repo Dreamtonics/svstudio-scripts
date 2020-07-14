@@ -1,9 +1,10 @@
 function getClientInfo()
   return {
     name = "Test Project (Lua)",
+    category = "Tests",
     author = "Dreamtonics",
-    versionNumber = 0,
-    minEditorVersion = 0
+    versionNumber = 1,
+    minEditorVersion = 65536
   }
 end
 

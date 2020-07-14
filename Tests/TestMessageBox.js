@@ -3,6 +3,7 @@ var SCRIPT_TITLE = "Test Message Boxes";
 function getClientInfo() {
   return {
     "name" : "Test Message Boxes (Javascript)",
+    "category" : "Tests",
     "author" : "Dreamtonics",
     "versionNumber" : 0,
     "minEditorVersion" : 65537

@@ -3,9 +3,10 @@ SCRIPT_TITLE = "Test Message Boxes"
 function getClientInfo()
   return {
     name = "Test Message Boxes (Lua)",
+    category = "Tests",
     author = "Dreamtonics",
-    versionNumber = 0,
-    minEditorVersion = 0
+    versionNumber = 1,
+    minEditorVersion = 65536
   }
 end
 
