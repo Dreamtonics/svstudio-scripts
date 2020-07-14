@@ -16,50 +16,58 @@ function getTranslations(langCode) {
   return [];
 }
 
-function main() {
-  // SV.showMessageBox(SV.T("Debugging"), SV.QUARTER);
-  var playback = SV.getPlayback();
+function setInterval(t, callback) {
+  callback();
+  SV.setTimeout(t, setInterval.bind(null, t, callback));
+}
+
+function findSortedNote(group, pos) {
+  var idxMin = 0; var idxMax = group.getNumNotes() - 1;
+  var idxMid = Math.floor((idxMin + idxMax) / 2);
+  while(idxMid != idxMin) {
+    if(group.getNote(idxMid).getOnset() > pos)
+      idxMax = idxMid;
+    else
+      idxMin = idxMid;
+    idxMid = Math.floor((idxMin + idxMax) / 2);
+  }
+  if(idxMin < group.getNumNotes() - 1 &&
+     group.getNote(idxMin).getEnd() <= pos)
+    idxMin ++;
+  return group.getNote(idxMin);
+}
+
+function getNewPos() {
   var scope = SV.getMainEditor().getCurrentGroup();
   var group = scope.getTarget();
-  var N = group.getNumNotes();
   var offset = scope.getTimeOffset();
-  var closestOnset = group.getNote(0).getOnset() + offset;
-  playback.play();
+  var timeAxis = SV.getProject().getTimeAxis();
 
-  var project = SV.getProject();
-  var timeAxis = project.getTimeAxis();
+  var playback = SV.getPlayback();
+  var position = timeAxis.getBlickFromSeconds(playback.getPlayhead());
+  
+  var N = group.getNumNotes();
+  if(N == 0)
+    return SV.finish();
 
-  function getNewPos() {
-    var skip = true;
-    var position = timeAxis.getBlickFromSeconds(playback.getPlayhead());
-    var foundClosest = false;
-    for(var i = 0; i < N; i++) {
-      var onset = group.getNote(i).getOnset() + offset;
-      if(!foundClosest && position < onset) {
-        closestOnset = onset;
-        foundClosest = true;
-      }
-      var checkLeft = position >= onset;
-      var checkRight = position <= group.getNote(i).getEnd() + offset;
-      if(checkLeft && checkRight) {
-        skip = false;
-        break;
-      }
-    }
-    if(skip) {
-      playback.seek(timeAxis.getSecondsFromBlick(closestOnset));
-    }
-    if(position > group.getNote(N - 1).getEnd() + offset || 
-      playback.getStatus() == "stopped") {
-        
-      playback.stop();
-      SV.finish();
-      return;
-    } else {
-      SV.setTimeout(200, getNewPos);
-    }
-
+  var note = findSortedNote(group, position - offset);
+  var padding = SV.QUARTER;
+  var onset = note.getOnset() + offset;
+  if(position + padding >= onset &&
+     position - padding <= note.getEnd() + offset) {
+    // inside a note now
+  } else {
+    playback.seek(timeAxis.getSecondsFromBlick(onset - padding));
   }
+  
+  if(position > group.getNote(N - 1).getEnd() + offset || 
+     playback.getStatus() == "stopped") {
+    playback.stop();
+    SV.finish();
+  }
+}
 
-  SV.setTimeout(200, getNewPos);
+function main() {
+  SV.getPlayback().play();
+  setInterval(200, getNewPos);
 }
