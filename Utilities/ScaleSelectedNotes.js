@@ -31,7 +31,7 @@ function scale(options) {
     return noteA.getOnset() - noteB.getOnset();
   });
   
-  var firstOnset = selectedNotes[0].getOnset();
+  var firstOnset = options.relative ? selectedNotes[0].getOnset() : 0;
   var prevEnd = -1;
   for(var i = 0; i < selectedNotes.length; i ++) {
     var currOnset = selectedNotes[i].getOnset() - firstOnset;
