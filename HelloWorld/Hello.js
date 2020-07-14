@@ -1,6 +1,7 @@
 function getClientInfo() {
   return {
     "name" : "Hello World (Javascript)",
+    "category" : "Examples",
     "author" : "Dreamtonics",
     "versionNumber" : 0,
     "minEditorVersion" : 0
