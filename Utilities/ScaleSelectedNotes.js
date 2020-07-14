@@ -4,7 +4,7 @@ function getClientInfo() {
   return {
     "name": SV.T(SCRIPT_TITLE),
     "author": "Dreamtonics",
-    "versionNumber": 1,
+    "versionNumber": 2,
     "minEditorVersion": 65537
   }
 }
@@ -13,33 +13,29 @@ function getTranslations(langCode) {
   if(langCode == "ja-jp") {
     return [
       ["Scale Selected Notes", "読み込まれたノートを拡大縮小"],
-      ["Enter scaling factor (Default: cancel truncation loss).",
-        "拡大縮小係数を入力してください（既定：切り捨て誤差打ち消し）。"]
+      ["Upscaling factor", "拡大係数"],
+      ["Downscaling factor", "縮小係数"],
+      ["Relative to the selection start", "選択範囲の開始を基準とする"]
     ];
   }
   return [];
 }
 
-function main() {
+function scale(options) {
   var selection = SV.getMainEditor().getSelection();
   var selectedNotes = selection.getSelectedNotes();
-
-  var N = selectedNotes.length;
-
-  var start = selectedNotes[0].getOnset();
-  var end = selectedNotes[N - 1].getEnd();
-
-  var trueDurationEstimate = end - start + 0.5 * N * SV.QUARTER / 480;
-  var truncatedDurationEstimate = end - start;
-  var scale = trueDurationEstimate / truncatedDurationEstimate;
-
-  scale = SV.showInputBox(SV.T(SCRIPT_TITLE),
-    SV.T("Enter scaling factor (Default: cancel truncation loss)."), scale);
-
+  if(selectedNotes.length == 0)
+    return;
+  
+  selectedNotes.sort(function(noteA, noteB) {
+    return noteA.getOnset() - noteB.getOnset();
+  });
+  
+  var firstOnset = selectedNotes[0].getOnset();
   var prevEnd = -1;
-  for(var i = 0; i < N; i ++) {
-    var currOnset = selectedNotes[i].getOnset();
-    var currEnd = selectedNotes[i].getEnd();
+  for(var i = 0; i < selectedNotes.length; i ++) {
+    var currOnset = selectedNotes[i].getOnset() - firstOnset;
+    var currEnd = selectedNotes[i].getEnd() - firstOnset;
 
     if(currOnset == currEnd) {
       selectedNotes.removeNote(i);
@@ -48,12 +44,56 @@ function main() {
 
     if(i > 0 && prevEnd == currOnset)
       selectedNotes[i].setOnset(selectedNotes[i - 1].getEnd());
-    else
-      selectedNotes[i].setOnset(scale * currOnset);
+    else {
+      selectedNotes[i].setOnset(firstOnset +
+        currOnset * options.upscale / options.downscale);
+    }
 
-    selectedNotes[i].setDuration(scale * currEnd - selectedNotes[i].getOnset());
+    selectedNotes[i].setDuration(
+      currEnd * options.upscale / options.downscale -
+      (selectedNotes[i].getOnset() - firstOnset));
     prevEnd = currEnd;
   }
+}
+
+function main() {
+  var form = {
+    "title"   : SV.T(SCRIPT_TITLE),
+    "message" : "",
+    "buttons" : "OkCancel",
+    "widgets" : [
+      {
+        "name"     : "upscale",
+        "type"     : "Slider",
+        "label"    : SV.T("Upscaling factor"),
+        "format"   : "%1.0f",
+        "minValue" : 1,
+        "maxValue" : 8,
+        "interval" : 1,
+        "default"  : 1
+      },
+      {
+        "name"     : "downscale",
+        "type"     : "Slider",
+        "label"    : SV.T("Downscaling factor"),
+        "format"   : "%1.0f",
+        "minValue" : 1,
+        "maxValue" : 8,
+        "interval" : 1,
+        "default"  : 1
+      },
+      {
+        "name"     : "relative",
+        "type"     : "CheckBox",
+        "text"     : SV.T("Relative to the selection start"),
+        "default"  : true
+      }
+    ]
+  };
+
+  var results = SV.showCustomDialog(form);
+  if(results.status)
+    scale(results.answers);
 
   SV.finish();
 }
