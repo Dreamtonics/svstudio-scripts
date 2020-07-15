@@ -145,23 +145,9 @@ function randn()
 end
 _randn_queued = nil
 
-function randomize(options)
-  local scope = SV:getMainEditor():getCurrentGroup()
-  local group = scope:getTarget()
-  local ranges = getSelectedRanges()
-
-  local am = group:getParameter(paramTypeNames[options.paramType + 1])
-  local step = math.floor(SV.QUARTER / options.density)
-
-  local scale = 1
-  local center = am:getDefinition().defaultValue
-  if options.paramType == 0 then
-    scale = 100
-  elseif options.paramType == 2 then
-    scale = 12
-  end
-
-  local v, vPrev = 0, 0
+-- Design a smoothing filter with an auto-makeup gain.
+-- Return a filter function.
+function makeSmoothingFilter(options)
   local a = 1 - options.speed
   local densityScale = 16 / options.density
 
@@ -183,15 +169,36 @@ function randomize(options)
   -- Calculate the power gain of the smoothing filter.
   powerGain = powerIntegral(math.pi) - powerIntegral(0)
 
+  local y = 0
+  return function(x)
+    y = y * a + x * options.strength * (1 - a)
+    -- Compensate for the power gain.
+    return y / math.sqrt(powerGain)
+  end
+end
+
+function randomize(options)
+  local scope = SV:getMainEditor():getCurrentGroup()
+  local group = scope:getTarget()
+  local ranges = getSelectedRanges()
+
+  local am = group:getParameter(paramTypeNames[options.paramType + 1])
+  local step = math.floor(SV.QUARTER / options.density)
+
+  local scale = 1
+  local center = am:getDefinition().defaultValue
+  if options.paramType == 0 then
+    scale = 100
+  elseif options.paramType == 2 then
+    scale = 12
+  end
+
+  local filter = makeSmoothingFilter(options)
   for i, r in ipairs(ranges) do
     local b = r[1]
     while b < r[2] do
-      v = randn() * scale * options.strength
-      v = vPrev * a + v * (1.0 - a)
-      vPrev = v
-
-      -- Compensate for the power gain.
-      am:add(b, center + v / math.sqrt(powerGain))
+      local v = filter(randn() * scale)
+      am:add(b, center + v)
       b = b + step
     end
   end
