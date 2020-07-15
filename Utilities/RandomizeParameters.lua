@@ -119,23 +119,6 @@ function getSelectedRanges()
   return ranges
 end
 
-function bisectionMethod(f, xmin, xmax, numIter)
-  if numIter == nil then
-    numIter = 100
-  end
-  local xmean = (xmin + xmax) * 0.5
-  local ymean = f(xmean)
-  if math.abs(ymean) < 1e-5 or numIter == 0 then
-    return xmean
-  end
-  local ymax = f(xmax)
-  if (ymax > 0) ~= (ymean > 0) then
-    return bisectionMethod(f, xmean, xmax, numIter - 1)
-  else
-    return bisectionMethod(f, xmin, xmean, numIter - 1)
-  end
-end
-
 -- Gaussian noise generator with mean = 0, variance = 1.
 function randn()
   if _randn_queued ~= nil then
@@ -158,14 +141,16 @@ function makeSmoothingFilter(options)
   local densityScale = 16 / options.density
 
   -- The smoothing filter's -6dB crossing point.
-  local omega6dB = math.acos(- (3 * a * a - 8 * a + 3) / 2 / a)
+  local omega6dB = math.acos(
+    math.min(1, math.max(0, - (3 * a * a - 8 * a + 3) / 2 / a)))
 
   -- Adjust the decay rate against point density to keep -6dB crossing point.
   omega6dB = math.min(math.pi, math.max(0, omega6dB * densityScale))
-  local inverseOmega = math.cos(omega6dB)
-  a = bisectionMethod(function(x)
-    return - (3 * x * x - 8 * x + 3) / 2 / x - inverseOmega
-  end, 0, 1)
+  local inverseOmega = math.min(1 - 1e-7, math.cos(omega6dB))
+  -- Solve for a new decay rate that keeps the -6dB crossing frequency.
+  -- This has a closed-form solution.
+  local delta = math.sqrt((2 * inverseOmega - 8) ^ 2 - 36)
+  a = (8 - 2 * inverseOmega - delta) / 6
 
   -- Integration of the smoothing filter's power response.
   local powerIntegral = function(omega)
