@@ -76,6 +76,12 @@ function main()
         maxValue = 64,
         interval = 1,
         default = 16
+      },
+      {
+        name = "overwrite",
+        type = "CheckBox",
+        text = SV:T("Replace existing control points."),
+        default = false
       }
     }
   }
@@ -193,12 +199,31 @@ function randomize(options)
     scale = 12
   end
 
+  -- Make a copy of all the points in the selected ranges.
+  local amCopy = SV:create("Automation", paramTypeNames[options.paramType + 1])
+  if not options.overwrite then
+    for i, r in ipairs(ranges) do
+      local points = am:getPoints(r[1], r[2])
+      for _, p in ipairs(points) do
+        amCopy:add(p[1], p[2])
+      end
+    end
+  end
+  
   local filter = makeSmoothingFilter(options)
   for i, r in ipairs(ranges) do
+    local origLeft, origRight = am:get(r[1] - step), am:get(r[2] + step)
+    am:add(r[1] - step, origLeft)
+    am:add(r[2] + step, origRight)
+    am:remove(r[1], r[2])
     local b = r[1]
     while b < r[2] do
       local v = filter(randn() * scale)
-      am:add(b, center + v)
+      if options.overwrite then
+        am:add(b, center + v)
+      else
+        am:add(b, amCopy:get(b) + v)
+      end
       b = b + step
     end
   end
