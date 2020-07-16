@@ -50,6 +50,12 @@ function getNewPos() {
   if(N == 0)
     return SV.finish();
 
+  if(position > group.getNote(N - 1).getEnd() + offset || 
+    playback.getStatus() == "stopped") {
+    playback.pause();
+    SV.finish();
+  }
+  
   var note = findSortedNote(group, position - offset);
   var padding = SV.QUARTER;
   var onset = note.getOnset() + offset;
@@ -58,12 +64,6 @@ function getNewPos() {
     // inside a note now
   } else {
     playback.seek(timeAxis.getSecondsFromBlick(onset - padding));
-  }
-  
-  if(position > group.getNote(N - 1).getEnd() + offset || 
-     playback.getStatus() == "stopped") {
-    playback.stop();
-    SV.finish();
   }
 }
 
