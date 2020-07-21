@@ -22,8 +22,12 @@ function next(groupName)
 
   local mainProject = SV:getProject()
   local newGroup = SV:create("NoteGroup")
+  local newGroupReference = SV:create("NoteGroupReference")
   newGroup:setName(groupName)
   mainProject:addNoteGroup(newGroup, 1)
+  newGroupReference:setTarget(newGroup)
+  -- There always exists at least one track
+  mainProject:getTrack(1):addGroupReference(newGroupReference)
 
   onNextFrame()
 end

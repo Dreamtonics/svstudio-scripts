@@ -24,8 +24,12 @@ function next(groupName) {
 
   var mainProject = SV.getProject();
   var newGroup = SV.create("NoteGroup");
+  var newGroupReference = SV.create("NoteGroupReference");
   newGroup.setName(groupName);
   mainProject.addNoteGroup(newGroup, 0);
+  newGroupReference.setTarget(newGroup);
+  // There always exists at least one track
+  mainProject.getTrack(0).addGroupReference(newGroupReference);
 
   onNextFrame();
 }
