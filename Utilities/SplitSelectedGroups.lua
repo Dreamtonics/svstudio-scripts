@@ -12,6 +12,15 @@ function getClientInfo()
   }
 end
 
+function getTranslations(langCode)
+  if langCode == "ja-jp" then
+    return {
+      {"Split Selected Groups", "選択したグループの分割"},
+    }
+  end
+  return {}
+end
+
 function main()
   local mGroupRefs = SV:getMainEditor():getSelection():getSelectedGroups()
   local aGroupRefs = SV:getArrangement():getSelection():getSelectedGroups()

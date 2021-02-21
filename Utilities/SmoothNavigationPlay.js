@@ -7,6 +7,15 @@ function getClientInfo() {
   };
 }
 
+function getTranslations(langCode) {
+  if (langCode == "ja-jp") {
+    return [
+      ["Play with Smooth Page Turning", "スムーズスクロール再生"],
+    ];
+  }
+  return [];
+}
+
 function setInterval(t, callback) {
   callback();
   SV.setTimeout(t, setInterval.bind(null, t, callback));
