@@ -31,7 +31,7 @@ function getTranslations(langCode)
       {"Randomize Parameters", "参数随机化"},
       {"Parameter Type", "参数类型"},
       {"Speed", "速度"},
-      {"Points per quarter", "每四分之一小节的锚点数"},
+      {"Points per quarter", "每个四分音符的控制点数量"},
       {"Replace existing control points.", "替换现有的控制点。"}
     }
   end
