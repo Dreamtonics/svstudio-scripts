@@ -12,6 +12,15 @@ function getClientInfo()
   }
 end
 
+function getTranslations(langCode)
+  if langCode == "zh-cn" then
+    return {
+      {"Split Selected Groups", "分割选择的音符组"},
+    }
+  end
+  return {}
+end
+
 function main()
   local mGroupRefs = SV:getMainEditor():getSelection():getSelectedGroups()
   local aGroupRefs = SV:getArrangement():getSelection():getSelectedGroups()
