@@ -7,6 +7,15 @@ function getClientInfo() {
   };
 }
 
+function getTranslations(langCode) {
+  if(langCode == "zh-cn") {
+    return [
+      ["Play with Smooth Page Turning", "播放并平滑翻页"]
+    ];
+  }
+  return [];
+}
+
 function setInterval(t, callback) {
   callback();
   SV.setTimeout(t, setInterval.bind(null, t, callback));
