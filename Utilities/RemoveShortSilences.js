@@ -17,7 +17,7 @@ function getTranslations(langCode) {
       ["Scope", "スコープ"],
       ["Selected Notes", "選択されたノート"],
       ["Current Track", "現在のトラック"],
-      ["Entire Project", "プロジェクト全体"],
+      ["Entire Project", "プロジェクト全体"]
     ];
   }
   if(langCode == "zh-cn") {
@@ -27,7 +27,7 @@ function getTranslations(langCode) {
       ["Scope", "作用范围"],
       ["Selected Notes", "选择的音符"],
       ["Current Track", "当前音轨"],
-      ["Entire Project", "整个项目"],
+      ["Entire Project", "整个项目"]
     ];
   }
   return [];
