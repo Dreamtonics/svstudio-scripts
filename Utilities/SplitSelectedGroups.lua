@@ -15,7 +15,7 @@ end
 function getTranslations(langCode)
   if langCode == "zh-cn" then
     return {
-      {"Split Selected Groups", "分割选择的音符组"},
+      {"Split Selected Groups", "分割选择的音符组"}
     }
   end
   return {}
