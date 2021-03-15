@@ -15,7 +15,7 @@ function getTranslations(langCode) {
   }
   if(langCode == "zh-cn") {
     return [
-      ["Silence Skipping Play", "跳过无声部分进行播放"]
+      ["Silence Skipping Play", "跳过静默部分进行播放"]
     ];
   }
   return [];
