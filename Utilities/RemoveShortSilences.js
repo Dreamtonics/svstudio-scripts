@@ -17,7 +17,17 @@ function getTranslations(langCode) {
       ["Scope", "スコープ"],
       ["Selected Notes", "選択されたノート"],
       ["Current Track", "現在のトラック"],
-      ["Entire Project", "プロジェクト全体"],
+      ["Entire Project", "プロジェクト全体"]
+    ];
+  }
+  if(langCode == "zh-cn") {
+    return [
+      ["Remove Short Silences", "移除短促的静默间隙"],
+      ["Threshold", "作用起点"],
+      ["Scope", "作用范围"],
+      ["Selected Notes", "选择的音符"],
+      ["Current Track", "当前音轨"],
+      ["Entire Project", "整个项目"]
     ];
   }
   return [];

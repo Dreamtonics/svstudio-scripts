@@ -15,7 +15,12 @@ end
 function getTranslations(langCode)
   if langCode == "ja-jp" then
     return {
-      {"Split Selected Groups", "選択したグループの分割"},
+      {"Split Selected Groups", "選択したグループの分割"}
+    }
+  end
+  if langCode == "zh-cn" then
+    return {
+      {"Split Selected Groups", "分割选择的音符组"}
     }
   end
   return {}

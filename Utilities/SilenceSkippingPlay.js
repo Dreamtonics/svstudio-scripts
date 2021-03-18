@@ -13,6 +13,11 @@ function getTranslations(langCode) {
       ["Silence Skipping Play", "無音区間を飛ばして再生"]
     ];
   }
+  if(langCode == "zh-cn") {
+    return [
+      ["Silence Skipping Play", "跳过静默部分进行播放"]
+    ];
+  }
   return [];
 }
 
