@@ -32,7 +32,7 @@ function getTranslations(langCode)
       {"Parameter Type", "参数类型"},
       {"Speed", "速度"},
       {"Points per quarter", "每个四分音符的控制点数量"},
-      {"Replace existing control points.", "替换现有的控制点。"}
+      {"Replace existing control points", "替换现有的控制点"}
     }
   end
   return {}
@@ -89,7 +89,7 @@ function main()
       {
         name = "overwrite",
         type = "CheckBox",
-        text = SV:T("Replace existing control points."),
+        text = SV:T("Replace existing control points"),
         default = false
       }
     }
