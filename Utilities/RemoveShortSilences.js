@@ -23,7 +23,7 @@ function getTranslations(langCode) {
   if(langCode == "zh-cn") {
     return [
       ["Remove Short Silences", "删除短的静音部分"],
-      ["Threshold", "作用起点"],
+      ["Threshold", "阈值"],
       ["Scope", "作用范围"],
       ["Selected Notes", "选择的音符"],
       ["Current Track", "当前音轨"],
