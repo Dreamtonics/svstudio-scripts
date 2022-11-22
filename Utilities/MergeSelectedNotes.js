@@ -18,8 +18,8 @@ function getTranslations(langCode) {
   }
   if(langCode == "zh-cn") {
     return [
-      ["Merge Selected Notes", "合并选择的音符"],
-      ["Can't merge selected notes.", "无法合并选择的音符。"]
+      ["Merge Selected Notes", "合并所选音符"],
+      ["Can't merge selected notes.", "无法合并所选音符。"]
     ];
   }
   return [];

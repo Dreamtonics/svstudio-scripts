@@ -22,10 +22,10 @@ function getTranslations(langCode) {
   }
   if(langCode == "zh-cn") {
     return [
-      ["Remove Short Silences", "移除短促的静默间隙"],
-      ["Threshold", "作用起点"],
+      ["Remove Short Silences", "移除短的无声间隙"],
+      ["Threshold", "阈值"],
       ["Scope", "作用范围"],
-      ["Selected Notes", "选择的音符"],
+      ["Selected Notes", "所选音符"],
       ["Current Track", "当前音轨"],
       ["Entire Project", "整个项目"]
     ];

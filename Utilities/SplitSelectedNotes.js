@@ -15,7 +15,7 @@ function getTranslations(langCode) {
   }
   if(langCode == "zh-cn") {
     return [
-      ["Split Selected Notes", "分割选择的音符"]
+      ["Split Selected Notes", "分割所选音符"]
     ];
   }
   return [];

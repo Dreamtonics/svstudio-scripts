@@ -20,10 +20,10 @@ function getTranslations(langCode) {
   }
   if(langCode == "zh-cn") {
     return [
-      ["Scale Selected Notes", "缩放选择的音符"],
+      ["Scale Selected Notes", "缩放所选音符"],
       ["Upscaling factor", "放大系数"],
       ["Downscaling factor", "缩小系数"],
-      ["Relative to the selection start", "基于选取范围的开头位置进行缩放"]
+      ["Relative to the selection start", "基于选择范围的开始位置"]
     ];
   }
   return [];
