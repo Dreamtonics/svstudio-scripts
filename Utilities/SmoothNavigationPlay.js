@@ -15,7 +15,12 @@ function getTranslations(langCode) {
   }
   if(langCode == "zh-cn") {
     return [
-      ["Play with Smooth Page Turning", "播放并平滑翻页"]
+      ["Play with Smooth Page Turning", "平滑翻页播放"]
+    ];
+  }
+  if(langCode == "zh-tw") {
+    return [
+      ["Play with Smooth Page Turning", "平滑翻頁播放"]
     ];
   }
   return [];

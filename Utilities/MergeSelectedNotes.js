@@ -22,6 +22,12 @@ function getTranslations(langCode) {
       ["Can't merge selected notes.", "无法合并所选音符。"]
     ];
   }
+  if(langCode == "zh-tw") {
+    return [
+      ["Merge Selected Notes", "合併所選音符"],
+      ["Can't merge selected notes.", "無法合併所選音符。"]
+    ];
+  }
   return [];
 }
 

@@ -12,9 +12,9 @@ function getClientInfo() {
 function getTranslations(langCode) {
   if(langCode == "ja-jp") {
     return [
-      ["Scale Selected Notes", "読み込まれたノートを拡大縮小"],
-      ["Upscaling factor", "拡大係数"],
-      ["Downscaling factor", "縮小係数"],
+      ["Scale Selected Notes", "選択したノートの長さを拡大縮小"],
+      ["Upscaling factor", "拡大率"],
+      ["Downscaling factor", "縮小率"],
       ["Relative to the selection start", "選択範囲の開始を基準とする"]
     ];
   }
@@ -24,6 +24,14 @@ function getTranslations(langCode) {
       ["Upscaling factor", "放大系数"],
       ["Downscaling factor", "缩小系数"],
       ["Relative to the selection start", "基于选择范围的开始位置"]
+    ];
+  }
+  if(langCode == "zh-tw") {
+    return [
+      ["Scale Selected Notes", "縮放所選音符"],
+      ["Upscaling factor", "放大係數"],
+      ["Downscaling factor", "缩小系数"],
+      ["Relative to the selection start", "基於選取範圍的開始位置"]
     ];
   }
   return [];

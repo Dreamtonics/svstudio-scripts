@@ -22,8 +22,11 @@ end
 function getTranslations(langCode)
   if langCode == "ja-jp" then
     return {
-      {"Randomize Parameters", "パラメータの乱数化"},
-      {"Parameter Type", "パラメータタイプ"}
+      {"Randomize Parameters", "パラメータのランダム化"},
+      {"Parameter Type", "パラメータタイプ"},
+      {"Speed", "速度"},
+      {"Points per quarter", "4分音符あたりの制御点"},
+      {"Replace existing control points.", "すでにあるパラメータを置き換える"}
     }
   end
   if langCode == "zh-cn" then
@@ -31,8 +34,17 @@ function getTranslations(langCode)
       {"Randomize Parameters", "参数随机化"},
       {"Parameter Type", "参数类型"},
       {"Speed", "速度"},
-      {"Points per quarter", "每四分音符的控制点数量"},
-      {"Replace existing control points.", "替换既有的控制点。"}
+      {"Points per quarter", "每节拍控制点数"},
+      {"Replace existing control points.", "替换现有控制点"}
+    }
+  end
+  if langCode == "zh-tw" then
+    return {
+      {"Randomize Parameters", "參數隨機化"},
+      {"Parameter Type", "參數類型"},
+      {"Speed", "速度"},
+      {"Points per quarter", "每節拍控制點數"},
+      {"Replace existing control points.", "替換現有控制點"}
     }
   end
   return {}
